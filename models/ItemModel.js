@@ -26,7 +26,7 @@ const itemModel = new Schema({
     },
     dateAdded:{
         type:Date,
-        default:Date.now
+        default:Date.now()
         
     }
 
@@ -34,4 +34,4 @@ const itemModel = new Schema({
 })
 
 
-module.exports = model('item', itemModel)
+module.exports = model('products', itemModel)

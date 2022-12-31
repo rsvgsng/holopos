@@ -1,8 +1,12 @@
 const itemModel = require('../../models/ItemModel');
 const addStock = async (req, res) => {
-console.log(req.body)
     try {
-        const newItem =await  new itemModel({
+        if(!req.body.name || !req.body.price || !req.body.quantity || !req.body.category || !req.body.description)return res.send({
+            status:400,
+            message:"Please fill all the fields"
+
+        })
+        const newItem =await new itemModel({
         ItemName: req.body.name,
         ItemPrice: req.body.price,
         ItemQuantity: req.body.quantity,
@@ -34,7 +38,6 @@ console.log(req.body)
     catch (error) {
         
        console.log(error)
-
 
     }
 
