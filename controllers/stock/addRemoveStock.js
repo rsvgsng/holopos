@@ -62,7 +62,7 @@ const deleteProduct =  async(req, res) => {
                 })
             }
             data.remove()
-            return res.send({
+            return res.status(200).send({
                 status:200,
                 message:"Item deleted successfully"
             })
@@ -71,7 +71,7 @@ const deleteProduct =  async(req, res) => {
     
         
         catch{
-            res.status(500)
+          return  res.status(500)
         }
 
 
