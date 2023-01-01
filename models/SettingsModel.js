@@ -4,11 +4,12 @@ const itemModel = new Schema({
     Categories:{
         type: Array,
         required: true,
-    
+        unique: true
     },
     Theme:{
         type: String,
         default: "light",
+        
     }
     
 

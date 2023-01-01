@@ -2,8 +2,7 @@ const route = require('express').Router()
 
 const addRemoveStock = require('../controllers/stock/addRemoveStock');
 const getStock = require('../controllers/stock/getStock')
-const deleteItem =require('../controllers/stock/deleteItem')
-
+const catController = require('../controllers/categories/mainCategory')
 
 
 
@@ -19,8 +18,13 @@ route.get('/getProduct/category/:category',getStock.getProductByCategory);
 
 route.post('/addProduct',addRemoveStock.addProduct);
 route.delete('/deleteProduct/:id',addRemoveStock.deleteProduct);
+route.post('/editProduct/:id',addRemoveStock.editProduct);
 
 
+
+// related to categories
+
+route.post('/addCategory',catController.newCategory);
 
 
 

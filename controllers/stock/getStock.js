@@ -4,8 +4,11 @@ const ItemModel = require("../../models/ItemModel")
 const getAllStock = async (req, res) => {
     try {
         const items = await ItemModel.find({})
-        
-        res.send(items)    
+        if(items.length<1) return res.send({
+            status:404,
+            message:"No items available"
+        })
+      return  res.send(items)    
 
 
     } catch (error) {
@@ -13,8 +16,6 @@ const getAllStock = async (req, res) => {
     }
 
 }
-
-
 
 const getStock = async (req, res) => {
     try {
@@ -58,7 +59,7 @@ const getProductByCategory = async (req, res) => {
         })
         if(items.length<1) return res.send({
             status:404,
-            message:`No items available in "${req.params.category}" category`
+            message:`No items available in '${req.params.category}' category`
         })
 
       return  res.send(items)    

@@ -78,7 +78,49 @@ const deleteProduct =  async(req, res) => {
 
 }
 
+
+const editProduct = async (req, res) => {
+    try{
+         // checks if the category exists
+        const category = await SettingsModel.find({Categories:req.body.ItemCategory})
+        if(category.length<1) return res.status(400).send ({
+         status:400,
+         message:"Category name is invalid"
+        })
+
+         await itemModel.findByIdAndUpdate({_id:req.params.id},{
+            ItemName: req.body.ItemName,
+            ItemPrice: req.body.ItemPrice,
+            ItemQuantity: req.body.ItemQuantity,
+            ItemCategory: req.body.ItemCategory,
+            ItemDescription: req.body.ItemDescription
+        }).then((data)=>{
+            if(!data){
+                return res.status(404).send({
+                    status:400,
+                    message:"Item does not exist"
+                })
+            }
+            return res.status(200).send({
+                status:200,
+                message:"Item updated successfully"
+            })
+        })
+
+
+    }catch(e){
+       res.status(500).send({
+            status:500,
+            message:"Something Went Wrong"
+        })
+    }
+}
+
+
+
+
 module.exports = {
     addProduct,
-    deleteProduct
+    deleteProduct,
+    editProduct
 }
