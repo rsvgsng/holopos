@@ -1,6 +1,6 @@
 const itemModel = require('../../models/ItemModel');
 const SettingsModel = require('../../models/SettingsModel');
-
+const fs = require('fs');
 
 const addProduct = async (req, res) => {
     try {
@@ -100,14 +100,23 @@ const deleteProduct =  async(req, res) => {
 
     try{
 
-            await itemModel.findById({_id:req.params.id},(err,data)=>{
+            await itemModel.findById({_id:req.params.id},async(err,data)=>{
             if(!data){
                 return res.status(404).send({
                     status:400,
                     message:"Item does not exist"
                 })
             }
-            data.remove()
+
+            await fs.unlink(`files/ProductImages/${data.ItemImage}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            })
+            
+
+            await data.remove()
             return res.status(200).send({
                 status:200,
                 message:"Item deleted successfully"
@@ -126,20 +135,84 @@ const deleteProduct =  async(req, res) => {
 
 
 const editProduct = async (req, res) => {
+
     try{
+
+
+        if(req.files?.ItemImage){    
+
+          
+
+             const checkImage = await itemModel.findById(req.params.id)
+            
+             if(checkImage.length<1) return res.send({
+                status:400,
+                message:"Item does not exist"
+             })
+                 if(!req.files.ItemImage.mimetype.startsWith('image/'))  
+            
+            return res.send({
+
+                status:400,
+                message:"Please upload an image"
+            
+            })
+            
+
+            // remove the old image
+            await  fs.unlink(`files/ProductImages/${checkImage.ItemImage}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            })
+
+            // upload the new image
+            await req.files.ItemImage.mv(`files/ProductImages/${req.body.ItemName.toLowerCase().split(' ').join('')+'.' + req.files.ItemImage.mimetype.split("/")[1]}`)
+
+            await itemModel.findByIdAndUpdate({_id:req.params.id}, {
+                ItemImage:`${req.body.ItemName.toLowerCase().split(' ').join('')+'.' + req.files.ItemImage.mimetype.split("/")[1]}`
+            })
+
+        
+
+            if(req.files.ItemImage.size>(parseInt(process.env.MAX_IMAGE_SIZE )|| 2000000 )) return res.send({
+             
+                status:400,
+                message:`Image size should not exceed ${Math.round(process.env.MAX_IMAGE_SIZE/(1024*1024))|| Math.round(2000000/(1024*1024))} MB`
+            
+            })
+
+
+
+
+
+        }
+
+
+
+
          // checks if the category exists
-        const category = await SettingsModel.find({Categories:req.body.ItemCategory})
-        if(category.length<1) return res.status(400).send ({
-         status:400,
-         message:"Category name is invalid"
-        })
+         dupCat = await SettingsModel.find({ _id: process.env.CATEGORY_DB_ID }).select('Categories')
+
+         if (!dupCat[0].Categories.includes(req.body.ItemCategory.toLowerCase())) {
+             return res.status(400).send({
+                 message: "Category doesnot already exists",
+                 code: 400
+             })
+         }
+ 
+
+
 
          await itemModel.findByIdAndUpdate({_id:req.params.id},{
+        
             ItemName: req.body.ItemName,
             ItemPrice: req.body.ItemPrice,
             ItemQuantity: req.body.ItemQuantity,
             ItemCategory: req.body.ItemCategory,
             ItemDescription: req.body.ItemDescription
+        
         }).then((data)=>{
             if(!data){
                 return res.status(404).send({
@@ -155,9 +228,10 @@ const editProduct = async (req, res) => {
 
 
     }catch(e){
+        console.log(e)
        res.status(500).send({
             status:500,
-            message:"Something Went Wrong"
+            message:"Something Went Wrong or the Item does not exist"
         })
     }
 }

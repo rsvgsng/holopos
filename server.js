@@ -8,7 +8,10 @@ const dotenv =  require('dotenv')
 const bodyParser = require('body-parser')
 const upload = require('express-fileupload')
 const itemModel = require('./models/ItemModel')
+const cors = require('cors')
 
+
+app.use(cors())
 
 dotenv.config()
 app.use(express.static('public'))
@@ -28,7 +31,7 @@ app.use(function (req, res, next) {
 
 // Image Route Definitions
 
-app.get("/api/v1/ProductImage/:image", async(req, res) => {
+app.get("/Storage/Images/Product/:image", async(req, res) => {
     try{
         
           a = await  itemModel.find({
