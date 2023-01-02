@@ -25,6 +25,7 @@ route.post('/editProduct/:id',addRemoveStock.editProduct);
 // related to categories
 
 route.post('/addCategory',catController.newCategory);
+route.delete('/deleteCategory',catController.DeleteCategory);
 
 
 

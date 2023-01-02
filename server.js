@@ -10,8 +10,6 @@ app.use(express.json())
 
 dotenv.config()
 
-
-
 app.get("/", (req, res) => {
     res.send("<h1> Server is up and running :) </h1>")
 })

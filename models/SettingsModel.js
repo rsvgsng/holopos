@@ -1,14 +1,15 @@
 const { Schema, model } = require('mongoose')
 
 const itemModel = new Schema({
-    Categories:{
+    Categories:[{
         type: Array,
         required: true,
         unique: true
-    },
+    }],
     Theme:{
         type: String,
         default: "light",
+        
         
     }
     
