@@ -62,7 +62,11 @@ const getProductByCategory = async (req, res) => {
             message:`No items available in '${req.params.category}' category`
         })
 
-      return  res.send(items)    
+      return  res.send({
+        status:200,
+        length:items.length,
+        items:items,
+      })    
         
 
     } catch (error) {

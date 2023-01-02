@@ -15,6 +15,11 @@ const itemModel = new Schema({
         required: true,
 
     },
+    ItemImage:{
+        type:String,
+        required:true,
+        default:"https://www.chanchao.com.tw/images/default.jpg",
+    },
     ItemCategory: {
         type: String,
         required: true,
