@@ -50,8 +50,7 @@ const addProduct = async (req, res) => {
         
         })
 
-        var ItemUnit=['piece','kg','gm','litre','ml','dozen']
-
+        var ItemUnit=['piece','kg','gm','litre','packet','ml','dozen']
         if(!ItemUnit.includes(req.body.ItemUnit)) return res.send({
             status:400,
             message:"Invalid Item Unit"
