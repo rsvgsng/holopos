@@ -21,10 +21,11 @@ route.get('/getProduct/category/:category',getStock.getProductByCategory);
 
 route.post('/addProduct',addRemoveStock.addProduct);
 route.delete('/deleteProduct/:id',addRemoveStock.deleteProduct);
-route.post('/editProduct/:id',addRemoveStock.editProduct);
+route.post('/edit/product/:id',addRemoveStock.editProduct);
 
 // Purchases Page
 route.post('/create/expenses',ExpensesController.CreateExpenses);
+route.post('/edit/expenses/:id',ExpensesController.EditExpenses);
 
 
 
