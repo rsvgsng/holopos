@@ -15,6 +15,15 @@ const itemModel = new Schema({
         required: true,
 
     },
+    ItemCode:{
+        type:String,
+        unique:true
+    },
+    ItemUnit:{
+        type:String,
+        required:true,
+        
+    },
     ItemImage:{
         type:String,
         required:true,

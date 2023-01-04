@@ -7,7 +7,10 @@ const addProduct = async (req, res) => {
 
         // some basic validations
 
-        if(!req.body.ItemName || !req.body.ItemPrice || !req.body.ItemQuantity || !req.body.ItemCategory || !req.body.ItemDescription)
+        if(!req.body.ItemName || !req.body.ItemPrice || !req.body.ItemQuantity || !req.body.ItemUnit ||  !req.body.ItemCategory || !req.body.ItemDescription)
+
+
+
         return res.send({
             status:400,
             message:"Please fill all the fields"
@@ -32,7 +35,7 @@ const addProduct = async (req, res) => {
         if(!req.files.ItemImage.mimetype.startsWith('image/'))  
         return res.send({
             status:400,
-            message:"Please upload an image"
+            message:"Please upload an image" 
         })
         
         if(req.files.ItemImage.size>(parseInt(process.env.MAX_IMAGE_SIZE )|| 2000000 )) return res.send({
@@ -46,14 +49,22 @@ const addProduct = async (req, res) => {
         
         })
 
+        var ItemUnit=['piece','kg','gm','litre','ml','dozen']
+
+        if(!ItemUnit.includes(req.body.ItemUnit)) return res.send({
+            status:400,
+            message:"Invalid Item Unit"
+        })
+    
         const newItem =await new itemModel({
 
         ItemName: req.body.ItemName.toLowerCase(),
         ItemPrice: req.body.ItemPrice,
         ItemQuantity: req.body.ItemQuantity,
         ItemCategory: req.body.ItemCategory,
-        ItemDescription: req.body.ItemDescription
-
+        ItemDescription: req.body.ItemDescription,
+        ItemCode: req.body.ItemCode,
+        ItemUnit: req.body.ItemUnit,
         })
   
     // checks if the category exists
@@ -72,11 +83,12 @@ const addProduct = async (req, res) => {
         message:"Category name is invalid"
    })
 
-    await newItem.save(async (err) => {
+   console.log(newItem)
+   await newItem.save(async (err,data) => {
         // check image size 
-       await req.files.ItemImage.mv(`files/ProductImages/${req.body.ItemName.toLowerCase().split(' ').join('')+'.' + req.files.ItemImage.mimetype.split("/")[1]}`)
+        await req.files.ItemImage.mv(`files/ProductImages/${req.body.ItemName.toLowerCase().split(' ').join('')+'.' + req.files.ItemImage.mimetype.split("/")[1]}`)
 
-       await    itemModel.findByIdAndUpdate({_id:newItem._id}, {
+       await   itemModel.findByIdAndUpdate({_id:newItem._id}, {
             ItemImage:`${req.body.ItemName.toLowerCase().split(' ').join('')+'.' + req.files.ItemImage.mimetype.split("/")[1]}`
         })
 
@@ -85,7 +97,6 @@ const addProduct = async (req, res) => {
             message: "Item added successfully",
         })
     })
-
 
     }
     
