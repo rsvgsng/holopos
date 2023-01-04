@@ -1,12 +1,12 @@
 const itemModel = require('../../models/ItemModel');
 const SettingsModel = require('../../models/SettingsModel');
+const {ItemUnits}  = require('../../misc/CustomCategories');
 const fs = require('fs');
 
 const addProduct = async (req, res) => {
     try {
 
-
-
+    
 
         if(!req.body.ItemName || !req.body.ItemPrice || !req.body.ItemQuantity || !req.body.ItemUnit ||  !req.body.ItemCategory || !req.body.ItemDescription)
 
@@ -50,7 +50,8 @@ const addProduct = async (req, res) => {
         
         })
 
-        var ItemUnit=['piece','kg','gm','litre','packet','ml','dozen']
+        var ItemUnit=ItemUnits().ItemUnit
+        
         if(!ItemUnit.includes(req.body.ItemUnit)) return res.send({
             status:400,
             message:"Invalid Item Unit"

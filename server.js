@@ -9,13 +9,14 @@ const bodyParser = require('body-parser')
 const upload = require('express-fileupload')
 const itemModel = require('./models/ItemModel')
 const cors = require('cors')
+const fs = require('fs');
 
 
+app.use(upload())
 app.use(cors())
 
 dotenv.config()
 app.use(express.static('public'))
-app.use(upload())
 
 app.use(bodyParser.json());
 
@@ -28,6 +29,18 @@ app.use(function (req, res, next) {
     res.setHeader('Server', 'Numa Server');
     next();
 });
+
+
+
+// creating a folder to store images
+
+if (!fs.existsSync(__dirname + "/files/ProductImages/")) {
+    
+    fs.mkdir(__dirname + "/files/ProductImages/" , { recursive: true }, (err) => {
+        if (err) throw err;
+    });
+
+}
 
 // Image Route Definitions
 
