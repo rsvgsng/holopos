@@ -5,7 +5,8 @@ const fs = require('fs');
 const addProduct = async (req, res) => {
     try {
 
-        // some basic validations
+
+
 
         if(!req.body.ItemName || !req.body.ItemPrice || !req.body.ItemQuantity || !req.body.ItemUnit ||  !req.body.ItemCategory || !req.body.ItemDescription)
 
@@ -66,7 +67,7 @@ const addProduct = async (req, res) => {
         ItemCode: req.body.ItemCode,
         ItemUnit: req.body.ItemUnit,
         })
-  
+        console.log(newItem)
     // checks if the category exists
 
    const category = await SettingsModel.find({Categories:req.body.ItemCategory.toLowerCase()})
@@ -83,9 +84,14 @@ const addProduct = async (req, res) => {
         message:"Category name is invalid"
    })
 
-   console.log(newItem)
    await newItem.save(async (err,data) => {
-        // check image size 
+        if(err) console.log(err)    
+
+        if(err) return res.send({
+            status:400,
+            message:"Error adding item , Either item name or item code already exists",
+        })
+        
         await req.files.ItemImage.mv(`files/ProductImages/${req.body.ItemName.toLowerCase().split(' ').join('')+'.' + req.files.ItemImage.mimetype.split("/")[1]}`)
 
        await   itemModel.findByIdAndUpdate({_id:newItem._id}, {

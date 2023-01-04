@@ -5,20 +5,21 @@ const itemModel = new Schema({
         type: String,
         required: true,
     },
+    
     ItemPrice: {
-        type: Number,
-        required: true,
-
-    },
-    ItemQuantity: {
         type: Number,
         required: true,
 
     },
     ItemCode:{
         type:String,
-        unique:true
+        unique:true,
     },
+    ItemQuantity: {
+        type: Number,
+        required: true,
+    },
+
     ItemUnit:{
         type:String,
         required:true,
@@ -29,6 +30,7 @@ const itemModel = new Schema({
         required:true,
         default:"https://www.chanchao.com.tw/images/default.jpg",
     },
+
     ItemCategory: {
         type: String,
         required: true,
