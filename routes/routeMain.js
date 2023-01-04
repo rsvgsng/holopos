@@ -10,7 +10,10 @@ const catController = require('../controllers/categories/mainCategory')
 
 route.get('/getProduct/all',getStock.getAllStock);
 route.get('/getProduct/stock',getStock.getStock);
+route.get('/getProduct/nostock',getStock.getOutofStock);
 route.get('/getProduct/:id',getStock.getSingleProduct);
+route.get('/getProduct/:id',getStock.getSingleProduct);
+route.get('/getProduct/code/:code',getStock.getSingleProductByCode);
 route.get('/getProduct/category/:category',getStock.getProductByCategory);
 
 
