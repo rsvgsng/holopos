@@ -6,15 +6,15 @@ const CreateSale = async (req, res) => {
     try {
         const { TotalPrice, Items } = req.body
 
-
-        if (!TotalPrice || !Items) return res.status(400).json({ message: "Please provide all the required fields", status: 400 })
+        if (!TotalPrice || !Items) return res.status(400).json({ message: "Error while creating sale. Make sure you fill all the necessary details.", status: 400 })
+       
 
         const Sale = new SalesModel({
-            TotalPrice,
+            TotalPrice: TotalPrice,
             Items: Items
         })
-
-        await Sale.save();
+   
+     await Sale.save();
 
         res.send({ message: "Sale Created", status: 200, TotalPrice, Items })
     } catch (error) {
@@ -75,6 +75,7 @@ if(req.query.range){
 
 
 // queries by sorting by ( all time, today, week, month, year)
+
         if(req.query.sort){
 
         switch (req.query.sort) {
@@ -95,7 +96,7 @@ if(req.query.range){
                     }
 
                 }).sort({date:-1}).select({_id:0,__v:0})
-                res.send({ message: "Today's Sales", status: 200, SalesToday })
+                res.send({ message: "Today's Sales", TotalSales:SalesToday.length ,  status: 200, SalesToday })
                 break;
 
 
