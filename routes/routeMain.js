@@ -29,7 +29,7 @@ route.post('/edit/expenses/:id',ExpensesController.EditExpenses);
 
 // Sales Related
 route.post('/create/sale',SalesController.CreateSale);
-
+route.get('/get/sales',SalesController.GetSales);
 
 // related to categories
 
