@@ -40,13 +40,15 @@ const EditExpenses = async (req, res) => {
         if (!ExpensesName || !ExpensesAmount || !ExpensesCategory || !ExpensesDescription || !ExpensesDate) return res.status(400).send({ message: "All fields are required" });
         if (!ExpensesCategoryList().ExpensesCategory.includes(ExpensesCategory)) return res.status(400).send({ message: "Invalid Expenses Category" });
 
-        const Expenses = await ExpensesModel.findByIdAndUpdate(req.params.id, {
+         await ExpensesModel.findByIdAndUpdate(req.params.id, {
             ExpensesName : ExpensesName,
             ExpensesAmount : ExpensesAmount,
             ExpensesCategory : ExpensesCategory,
             ExpensesDescription : ExpensesDescription,
             ExpensesDate: ExpensesDate
-        });
+        })
+
+
 
         res.status(200).send({
             message: "Expenses Updated",

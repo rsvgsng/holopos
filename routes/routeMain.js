@@ -4,7 +4,7 @@ const addRemoveStock = require('../controllers/stock/addRemoveStock');
 const getStock = require('../controllers/stock/getStock')
 const catController = require('../controllers/categories/mainCategory')
 const ExpensesController = require('../controllers/expenses/ExpensesController')
-
+const SalesController = require('../controllers/sales/SalesController')
 
 // Getting products
 
@@ -27,6 +27,8 @@ route.post('/edit/product/:id',addRemoveStock.editProduct);
 route.post('/create/expenses',ExpensesController.CreateExpenses);
 route.post('/edit/expenses/:id',ExpensesController.EditExpenses);
 
+// Sales Related
+route.post('/create/sale',SalesController.CreateSale);
 
 
 // related to categories

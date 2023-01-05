@@ -89,7 +89,7 @@ const addProduct = async (req, res) => {
 
         if(err) return res.send({
             status:400,
-            message:"Error adding item , Either item name or item code already exists",
+            message:"Error adding item , Either item name or item code already exists ",
         })
         
         await req.files.ItemImage.mv(`files/ProductImages/${req.body.ItemName.toLowerCase().split(' ').join('')+'.' + req.files.ItemImage.mimetype.split("/")[1]}`)
@@ -158,8 +158,7 @@ const editProduct = async (req, res) => {
 
         if(req.files?.ItemImage){    
 
-          
-
+        
              const checkImage = await itemModel.findById(req.params.id)
             
              if(checkImage.length<1) return res.send({
@@ -210,14 +209,17 @@ const editProduct = async (req, res) => {
 
 
          // checks if the category exists
-         dupCat = await SettingsModel.find({ _id: process.env.CATEGORY_DB_ID }).select('Categories')
+         if(req.body.ItemCategory){
+            dupCat = await SettingsModel.find({ _id: process.env.CATEGORY_DB_ID }).select('Categories')
 
-         if (!dupCat[0].Categories.includes(req.body.ItemCategory.toLowerCase())) {
-             return res.status(400).send({
-                 message: "Category doesnot already exists",
-                 code: 400
-             })
+            if (!dupCat[0].Categories.includes(req.body?.ItemCategory.toLowerCase())) {
+                return res.status(400).send({
+                    message: "Category doesnot already exists",
+                    code: 400
+                })
+            }
          }
+     
  
 
 
@@ -228,7 +230,9 @@ const editProduct = async (req, res) => {
             ItemPrice: req.body.ItemPrice,
             ItemQuantity: req.body.ItemQuantity,
             ItemCategory: req.body.ItemCategory,
-            ItemDescription: req.body.ItemDescription
+            ItemDescription: req.body.ItemDescription,
+            ItemCode: req.body.ItemCode,
+            ItemUnit: req.body.ItemUnit,
         
         }).then((data)=>{
             if(!data){

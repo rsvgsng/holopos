@@ -31,6 +31,13 @@ app.use(function (req, res, next) {
 });
 
 
+items:{
+
+    coke:[{
+        "name": "coke",
+    }
+]
+}
 
 // creating a folder to store images
 
@@ -56,7 +63,7 @@ app.get("/Storage/Images/Product/:image", async(req, res) => {
          res.sendFile(__dirname + "/files/ProductImages/" + req.params.image)
 
     }catch{
-        res.status(404).send("<h1> 404 File not found </h1>")
+        res.status(500)
     }
 
 })
