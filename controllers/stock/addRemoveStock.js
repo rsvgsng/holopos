@@ -6,11 +6,7 @@ const fs = require('fs');
 const addProduct = async (req, res) => {
     try {
 
-    
-
         if(!req.body.ItemName || !req.body.ItemPrice || !req.body.ItemQuantity || !req.body.ItemUnit ||  !req.body.ItemCategory || !req.body.ItemDescription)
-
-
 
         return res.send({
             status:400,
@@ -67,7 +63,6 @@ const addProduct = async (req, res) => {
         ItemCode: req.body.ItemCode,
         ItemUnit: req.body.ItemUnit,
         })
-        console.log(newItem)
     // checks if the category exists
 
    const category = await SettingsModel.find({Categories:req.body.ItemCategory.toLowerCase()})
@@ -249,7 +244,6 @@ const editProduct = async (req, res) => {
 
 
     }catch(e){
-        console.log(e)
        res.status(500).send({
             status:500,
             message:"Something Went Wrong or the Item does not exist"
