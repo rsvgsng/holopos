@@ -1,2 +1,4 @@
 node_modules
 Files/ProductImages/*
+files/.DS_Store
+.gitignore
